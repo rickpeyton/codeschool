@@ -1,3 +1,4 @@
+####################
 # Optional Arguments
 # Bad
 def tweet(message, lat, long)
@@ -12,6 +13,7 @@ end
 tweet("Practicing Ruby-Fu!") #now lat and long are not required.
 
 
+################################################
 # Named Arguments - Hash (a long parameter list)
 # Bad
 def tweet(message, lat = nil, long = nil, reply_id = nil)
@@ -22,6 +24,8 @@ tweet("Practicing Ruby-Fu!", 28.55, -81.33, 227946)
 # Even worse...
 tweet("Practicing Ruby-Fu!", nil, nil, 227946)
 
+
+#############################
 # Use a Hash Argument instead
 def tweet(message, options = {})
   status = Status.new
@@ -42,6 +46,7 @@ tweet("Practicing Ruby-Fu!",
 # order is option and complete hash is option (can omit options)
 
 
+############
 # Exceptions
 # Bad
 def get_tweets(list)
@@ -74,6 +79,7 @@ rescue AuthorizedException
 end
 
 
+###################
 # "Splat" Arguments
 def mention(status, *names)
   tweet("#{names.join(' ')} #{status}")
@@ -82,6 +88,7 @@ end
 mention('Your courses rocked!', 'eallam', 'greggpollack', 'jasonvanlue')
 
 
+##########################
 # You need a class when...
 # Bad
 user_names = [
@@ -110,6 +117,7 @@ user_names << Name.new('Madonna')
 user_names.each { |n| puts n.format }
 
 
+##############
 # Oversharing?
 attr_accessor :baz
 # is the same as
@@ -121,6 +129,7 @@ def baz
 end
 
 
+#######################
 # Oversharing Continued
 class Tweet
   attr_accessor :status, :created_at
@@ -149,6 +158,7 @@ tweet.created_at = Time.new(2084, 1, 1, 0, 0, 0, "-07:00") # now this
   # will fail as an undefined method
 
 
+####################
 # Re-opening Classes
 tweet = Tweet.new("Eating lunch.")
 puts tweet.to_s
@@ -164,9 +174,35 @@ end
 # now this creates an output that is much more readable
 tweet = Tweet.new("Eating lunch.")
 puts tweet.to_s
+# Eating lunch.
+# 2012-08-02 12:20:02 -0700
+
+# You can re-open and change any class
+# But beware! You don't know who relies on the old functionality
+# Only do this to classes that you own and are part of your project
 
 
+######
+# Self
+# Bad
+class UserList
+  attr_accessor :name
+  def initialize(name)
+    name = name
+  end
+end
+list = UserList.new('celebrities')
+list.name # this is nil and will fail
 
+# Good
+class UserList
+  attr_accessor :name
+  def initialize(name)
+    self.name = name # this calls name= on the current object
+  end
+end
+list = UserList.new('celebrities')
+list.name # this is nil and will fail
 
 
 
